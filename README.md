@@ -8,7 +8,8 @@
 
 | Skill | What it does | Status |
 |---|---|---|
-| [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | Let Claude hand a task to GPT (via Codex) as an independent second model — adversarial review, parallel execution, cross-checking | ✅ Ready |
+| [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | Let the agent hand a task to GPT (via Codex) as an independent second model — adversarial review, parallel execution, cross-checking | ✅ Ready |
+| [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | Act as the coordinator running many independent tasks in parallel across isolated workspaces — split, isolate, dispatch, observe; covers Codex/GPT fan-out, full-folder isolation, remote GPU/SSH, and reporting | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -82,6 +83,28 @@ No special command needed — Claude activates the skill on its own when the sit
 
 ---
 
+## orchestrating-parallel-research — you as the coordinator of a parallel fleet
+
+### The problem
+
+Running many experiments or tasks at once turns into chaos: agents overwrite each other's files, you micromanage every one, and you keep re-standardizing the layout mid-run. The failure mode is reactive patching instead of an up-front setup.
+
+### What you get
+
+- **Four coordinator moves** — *split* on isolation boundaries, *isolate* physically, *dispatch* direction (not a cage), *observe* and adjust. You're the brain; the agents execute.
+- **Full-folder isolation** — each agent gets its own checkout + branch + artifact dir, local and remote, so code edits and outputs never cross-contaminate; merge-back is optional.
+- **Dispatch contract** — hand each agent input / output / goal + an outline or pseudocode, then let it implement. No step-by-step scripting, no pile of "don't do X".
+- **Remote GPU / SSH discipline** — one serial channel, thin files back / heavy artifacts stay, plus a deploy + acceptance-gate checklist (invariant, trigger-count, single-variable).
+- **Report standards** — readability first: results and analysis over code, tables with one-line takeaways, split long reports.
+
+### Usage
+
+The agent loads it when you fan out 2+ independent tasks across isolated workspaces. Or trigger explicitly:
+
+> "Coordinate these experiments in parallel — you split, isolate, and dispatch; I'll review the reports."
+
+---
+
 ## 🚧 Coming soon: research automation series
 
 A full suite of research-automation workflows, packaged as skills:
@@ -119,6 +142,9 @@ skills/
     references/
       mcp.json            # gpt-codex MCP config — macOS / Linux
       mcp.windows.json    # gpt-codex MCP config — Windows
+  orchestrating-parallel-research/
+    SKILL.md              # the coordinator playbook
+    references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
 ```
 
 ## Contributing

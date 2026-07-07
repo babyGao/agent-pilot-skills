@@ -8,7 +8,8 @@
 
 | Skill | 一句话介绍 | 状态 |
 |---|---|---|
-| [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | 让 Claude 把任务派给 GPT（通过 Codex），获得独立第二模型的对抗审查、并行执行与交叉验证能力 | ✅ 可用 |
+| [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | 让 Agent 把任务派给 GPT（通过 Codex），获得独立第二模型的对抗审查、并行执行与交叉验证能力 | ✅ 可用 |
+| [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | 作为总协调者并行推进多个独立任务：拆分 / 隔离 / 派活 / 观测，覆盖 Codex/GPT 并行分发、整目录隔离、远程 GPU/SSH、报告规范 | ✅ 可用 |
 | 自动化科研系列 | 文献调研、实验设计、论文复现、结果验证等科研工作流 | 🚧 筹备中 |
 
 ---
@@ -82,6 +83,28 @@ claude mcp add gpt-codex -s user -- cmd /c codex mcp-server -c sandbox_mode="wor
 
 ---
 
+## orchestrating-parallel-research — 你作为并行舰队的总协调者
+
+### 它解决什么问题
+
+一次跑很多实验/任务很容易失控：agent 互相覆盖文件、你陷入逐个微管、边跑边改目录规范。根因是"边跑边打补丁"而不是"开工前就规范好"。
+
+### 装上之后的效果
+
+- **协调者四招**：沿隔离边界*拆分*、物理*隔离*、给方向不给牢笼地*派活*、持续*观测*调整。你当大脑，agent 做执行。
+- **整目录隔离**：每个 agent 一份独立 checkout + 分支 + 产物目录，本地与远端各一份，代码改动与产物互不污染；是否合并回主干可选。
+- **派单契约**：给每个 agent 输入 / 输出 / 目标 + 大纲或伪代码，剩下让它自己实现。不逐步教、不堆"不许做 X"。
+- **远程 GPU / SSH 纪律**：单串通道、薄件回传 / 重产物留服务器，配部署 + 验收门（不变量、触发计数、单变量）清单。
+- **报告规范**：可读性第一——效果与分析优先于代码，表格配一句结论，过长即拆分。
+
+### 使用
+
+当你要把 2 个以上独立任务并行铺开时，Agent 会自动启用。也可显式触发：
+
+> "把这些实验并行铺开——你负责拆分、隔离、派活，我来看汇报。"
+
+---
+
 ## 🚧 即将上架：自动化科研系列
 
 我们正在把一整套科研自动化工作流封装成 Skill，计划覆盖：
@@ -108,6 +131,9 @@ skills/
     references/
       mcp.json            # gpt-codex MCP 配置 —— macOS / Linux
       mcp.windows.json    # gpt-codex MCP 配置 —— Windows
+  orchestrating-parallel-research/
+    SKILL.md              # 协调者操作手册
+    references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
 ```
 
 ## 参与贡献
