@@ -97,6 +97,16 @@ claude mcp add gpt-codex -s user -- cmd /c codex mcp-server -c sandbox_mode="wor
 - **远程 GPU / SSH 纪律**：单串通道、薄件回传 / 重产物留服务器，配部署 + 验收门（不变量、触发计数、单变量）清单。
 - **报告规范**：可读性第一——效果与分析优先于代码，表格配一句结论，过长即拆分。
 
+### 安装
+
+还是上面那一行命令，从本仓库安装：
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+**不需要 MCP server**（和 `dispatching-codex-gpt` 不同）：并行分发直接调用 Codex CLI，装好并登录即可——`npm i -g @openai/codex && codex login`——也可以改用 agent 自带的 sub-agent。
+
 ### 使用
 
 当你要把 2 个以上独立任务并行铺开时，Agent 会自动启用。也可显式触发：

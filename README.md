@@ -97,6 +97,16 @@ Running many experiments or tasks at once turns into chaos: agents overwrite eac
 - **Remote GPU / SSH discipline** — one serial channel, thin files back / heavy artifacts stay, plus a deploy + acceptance-gate checklist (invariant, trigger-count, single-variable).
 - **Report standards** — readability first: results and analysis over code, tables with one-line takeaways, split long reports.
 
+### Install
+
+Same one-liner as above — it installs from this repo:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+**No MCP server needed** (unlike `dispatching-codex-gpt`): the parallel fan-out drives the Codex CLI directly, so just install and log in — `npm i -g @openai/codex && codex login` — or use your agent's own sub-agents.
+
 ### Usage
 
 The agent loads it when you fan out 2+ independent tasks across isolated workspaces. Or trigger explicitly:
