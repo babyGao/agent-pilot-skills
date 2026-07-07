@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gpt-codex": {
+      "command": "codex",
+      "args": [
+        "mcp-server",
+        "-c",
+        "sandbox_mode=workspace-write",
+        "-c",
+        "approval_policy=never"
+      ]
+    }
+  }
+}
