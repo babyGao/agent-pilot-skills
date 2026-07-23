@@ -10,6 +10,7 @@
 |---|---|---|
 | [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | Let the agent hand a task to GPT (via Codex) as an independent second model — adversarial review, parallel execution, cross-checking | ✅ Ready |
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | Act as the coordinator running many independent tasks in parallel across isolated workspaces — split, isolate, dispatch, observe; covers Codex/GPT fan-out, full-folder isolation, remote GPU/SSH, and reporting | ✅ Ready |
+| [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | A hand-drawn, warm-toned illustration style spec for AI / tech storytelling — locked four-color palette, per-element drawing rules, composition, and a do/don't checklist | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -115,6 +116,37 @@ The agent loads it when you fan out 2+ independent tasks across isolated workspa
 
 ---
 
+## sketch-tech-illustration — a hand-drawn look for AI / tech storytelling
+
+### The problem
+
+Ask an agent (or a designer) for "AI / tech" visuals and you usually get slick vector art: gradients, glows, a second accent color, faces — cold and templated. There's no shared spec for the warm, hand-drawn "someone is sketching this on paper for you" look, so every attempt drifts somewhere different.
+
+### What you get
+
+- **A four-color system, locked** — sand `#E5DBCA` ground, terracotta `#D2703F` as the *only* accent (never more than ~10% of the frame), warm ink `#16140F` for linework and dark scenes, paper `#F4EFE6` for panels. No gradients, no glow, no second accent.
+- **Per-element drawing rules** — exactly how to draw thought / speech bubbles, cut-paper hands (the only way "people" ever appear — no faces), skeuomorphic UI, the search pill, hand-drawn charts, the toolbox card, dark-scene stars, and motion ticks — down to brush, line weight, end caps, wobble, and fills.
+- **State by fill, not motion** — the core animation logic: express *selected / active / hit* by flipping a fill white → terracotta, never by moving things or introducing new colors.
+- **Composition + a Do/Don't checklist** — center-single, diagonal split, full-bleed color, before/after — plus a copy-ready replication checklist so the look stays consistent across frames and hands.
+
+### Install
+
+Same one-liner — it installs from this repo:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+No MCP server or extra runtime needed — it's a pure reference skill.
+
+### Usage
+
+The agent loads it whenever you ask for illustrations, storyboards, slides, cover art, or animation in this aesthetic. Or trigger explicitly:
+
+> "Draw this in the hand-drawn warm-tech style — sand ground, terracotta accent only, no faces."
+
+---
+
 ## 🚧 Coming soon: research automation series
 
 A full suite of research-automation workflows, packaged as skills:
@@ -155,6 +187,8 @@ skills/
   orchestrating-parallel-research/
     SKILL.md              # the coordinator playbook
     references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
+  sketch-tech-illustration/
+    SKILL.md              # the hand-drawn warm-tech style spec
 ```
 
 ## Contributing

@@ -10,6 +10,7 @@
 |---|---|---|
 | [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | 让 Agent 把任务派给 GPT（通过 Codex），获得独立第二模型的对抗审查、并行执行与交叉验证能力 | ✅ 可用 |
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | 作为总协调者并行推进多个独立任务：拆分 / 隔离 / 派活 / 观测，覆盖 Codex/GPT 并行分发、整目录隔离、远程 GPU/SSH、报告规范 | ✅ 可用 |
+| [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | 面向 AI / 科技叙事的「手绘暖调」插画风格规范——锁定四色系、逐元素画法、构图与 Do/Don't 清单 | ✅ 可用 |
 | 自动化科研系列 | 文献调研、实验设计、论文复现、结果验证等科研工作流 | 🚧 筹备中 |
 
 ---
@@ -115,6 +116,37 @@ npx skills add babyGao/agent-pilot-skills -g -y
 
 ---
 
+## sketch-tech-illustration — 面向 AI / 科技叙事的手绘暖调风格
+
+### 它解决什么问题
+
+让 Agent（或设计师）画「AI / 科技」题材，八成会得到光鲜的矢量图：渐变、高光、第二强调色、人脸——又冷又模板化。始终缺一份共享规范来还原那种温暖、手绘、「像有人在旁边给你边画边讲」的质感，于是每次产出都跑偏。
+
+### 装上之后的效果
+
+- **四色系统，写死**：沙米 `#E5DBCA` 打底，陶土橙 `#D2703F` 是*唯一*强调色（面积永不超过画面一成），暖墨黑 `#16140F` 管描边与暗场，纸白 `#F4EFE6` 管面板。没有渐变、没有高光、没有第二强调色。
+- **逐元素画法**：思考 / 对话气泡、剪纸的手（画面里「人」唯一的在场方式——不画脸）、拟物界面、搜索胶囊、手绘图表、工具箱卡片、暗场星点、动势短线——每一种都给到笔刷、线宽、收笔、抖动、填色的参数取向。
+- **状态靠填色，不靠位移**：核心动效逻辑——用填色白 → 橙表达「选中 / 激活 / 命中」，绝不靠移动或加新颜色。
+- **构图 + Do/Don't 清单**：单主体居中、对角分割、满幅色场、before/after，外加一份可直接照抄的复刻清单，保证跨帧、跨人手风格一致。
+
+### 安装
+
+还是上面那一行命令，从本仓库安装：
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+不需要 MCP server，也没有额外运行时——它是一份纯参考型 skill。
+
+### 使用
+
+当你让 Agent 画这套风格的插画、故事板、幻灯片、封面或动画时会自动启用。也可显式触发：
+
+> "用手绘暖调科技风画这个——沙米打底、只用陶土橙点睛、不画脸。"
+
+---
+
 ## 🚧 即将上架：自动化科研系列
 
 我们正在把一整套科研自动化工作流封装成 Skill，计划覆盖：
@@ -144,6 +176,8 @@ skills/
   orchestrating-parallel-research/
     SKILL.md              # 协调者操作手册
     references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
+  sketch-tech-illustration/
+    SKILL.md              # 手绘暖调科技风格规范
 ```
 
 ## 参与贡献
