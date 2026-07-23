@@ -11,6 +11,7 @@
 | [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | 让 Agent 把任务派给 GPT（通过 Codex），获得独立第二模型的对抗审查、并行执行与交叉验证能力 | ✅ 可用 |
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | 作为总协调者并行推进多个独立任务：拆分 / 隔离 / 派活 / 观测，覆盖 Codex/GPT 并行分发、整目录隔离、远程 GPU/SSH、报告规范 | ✅ 可用 |
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | 面向 AI / 科技叙事的「手绘暖调」插画风格规范——锁定四色系、逐元素画法、构图与 Do/Don't 清单 | ✅ 可用 |
+| [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | 把文章发布/转发到博客园：本地 Markdown 或从 51cto 抓取，图片重托管到博客园图床，走官方 REST API 发布 | ✅ 可用 |
 | 自动化科研系列 | 文献调研、实验设计、论文复现、结果验证等科研工作流 | 🚧 筹备中 |
 
 ---
@@ -132,6 +133,23 @@ npx skills add babyGao/agent-pilot-skills -g -y
 ### 安装
 
 还是上面那一行命令，从本仓库安装：
+## publishing-to-cnblogs — 稳定的博客园跨平台转发
+
+### 它解决什么问题
+
+用通用的浏览器自动化工具往博客园转发，会在两处翻车：源站图片（如 51cto）被防盗链拦截、发出来全是裂图链接；2024 年那套往编辑器 `send_keys` 的选择器随博客园改版失效。结果是一篇"图全裂、markdown 没渲染"的废文。
+
+### 装上之后的效果
+
+- **走 API 发布**：通过博客园自己的 REST API 新建/更新文章，`isMarkdown: true`，不依赖脆弱的编辑器脚本。
+- **图片重托管**：直连下载源站图片（绕过防盗链）→ 上传到博客园自家图床 → 改写 markdown。原本会 404 的图从此永久可显示。
+- **HTML 网格排版**：多张大图排成真正并排的 `<img width>` 网格，而不是竖着堆一列。
+- **可选抓取**：把 JS 渲染的源文章（51cto 等）抓成干净 markdown，或直接发本地 `.md`。
+- **浏览器只做最少的事**：调试浏览器仅用于登录取 cookie 和可选抓取，其余全是 HTTP 调用。
+
+### 安装
+
+还是那一行：
 
 ```bash
 npx skills add babyGao/agent-pilot-skills -g -y
@@ -144,6 +162,15 @@ npx skills add babyGao/agent-pilot-skills -g -y
 当你让 Agent 画这套风格的插画、故事板、幻灯片、封面或动画时会自动启用。也可显式触发：
 
 > "用手绘暖调科技风画这个——沙米打底、只用陶土橙点睛、不画脸。"
+再装 Python 依赖：`pip install selenium requests markdownify pyyaml`（需要 Chrome；selenium 4.6+ 会自动匹配 chromedriver）。**不需要 MCP server。**
+
+### 使用
+
+显式触发：
+
+> "把这篇 51cto 文章转发到博客园" · "把这个 markdown 发到博客园，图片帮我重托管"
+
+Agent 会起一个独立的调试 Chrome，让你在里面登录一次博客园，然后抓取 / 清洗 / 重托管图片 / 走 API 发布。
 
 ---
 
@@ -178,6 +205,10 @@ skills/
     references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
   sketch-tech-illustration/
     SKILL.md              # 手绘暖调科技风格规范
+  publishing-to-cnblogs/
+    SKILL.md              # 发布工作流
+    scripts/              # scrape · clean · get_cookies · rehost_images · to_html_rows · publish
+    references/           # cnblogs-api · gotchas
 ```
 
 ## 参与贡献

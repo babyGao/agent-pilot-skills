@@ -11,6 +11,7 @@
 | [dispatching-codex-gpt](skills/dispatching-codex-gpt/SKILL.md) | Let the agent hand a task to GPT (via Codex) as an independent second model — adversarial review, parallel execution, cross-checking | ✅ Ready |
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | Act as the coordinator running many independent tasks in parallel across isolated workspaces — split, isolate, dispatch, observe; covers Codex/GPT fan-out, full-folder isolation, remote GPU/SSH, and reporting | ✅ Ready |
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | A hand-drawn, warm-toned illustration style spec for AI / tech storytelling — locked four-color palette, per-element drawing rules, composition, and a do/don't checklist | ✅ Ready |
+| [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | Publish or cross-post an article to 博客园 (cnblogs) — local Markdown or scraped from 51cto — with images re-hosted to cnblogs' own CDN and publishing via the REST API | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -132,6 +133,23 @@ Ask an agent (or a designer) for "AI / tech" visuals and you usually get slick v
 ### Install
 
 Same one-liner — it installs from this repo:
+## publishing-to-cnblogs — reliable 博客园 cross-posting
+
+### The problem
+
+Cross-posting to 博客园 with a generic browser-automation tool breaks in two places: source images (e.g. from 51cto) are blocked by anti-leech and show up as dead links, and the 2024-era editor's `send_keys` selectors rot as the DOM changes. You end up with a post full of broken images and unrendered markdown.
+
+### What you get
+
+- **API-based publishing** — create or update posts through cnblogs' own REST API with `isMarkdown: true`; no fragile editor scripting.
+- **Image re-hosting** — download source images (bypassing anti-leech) and upload them to cnblogs' own CDN, then rewrite the markdown. Images that would otherwise 404 now display permanently.
+- **HTML grid layout** — multiple wide images become a real side-by-side `<img width>` grid instead of a vertical stack.
+- **Optional scraping** — pull a JS-rendered source article (51cto, …) into clean markdown, or publish a local `.md` directly.
+- **Minimal browser use** — the debug browser is only for logging in (cookies) and optional scraping; everything else is plain HTTP.
+
+### Install
+
+Same one-liner:
 
 ```bash
 npx skills add babyGao/agent-pilot-skills -g -y
@@ -144,6 +162,15 @@ No MCP server or extra runtime needed — it's a pure reference skill.
 The agent loads it whenever you ask for illustrations, storyboards, slides, cover art, or animation in this aesthetic. Or trigger explicitly:
 
 > "Draw this in the hand-drawn warm-tech style — sand ground, terracotta accent only, no faces."
+Then install its Python deps: `pip install selenium requests markdownify pyyaml` (needs Chrome; selenium 4.6+ auto-fetches the matching chromedriver). **No MCP server required.**
+
+### Usage
+
+Trigger explicitly:
+
+> "把这篇 51cto 文章转发到博客园" · "publish this markdown to 博客园 and re-host the images"
+
+The agent launches an isolated debug Chrome, has you log into 博客园 once, then scrapes / cleans / re-hosts images / publishes via the API.
 
 ---
 
@@ -189,6 +216,10 @@ skills/
     references/           # dispatch · isolation-and-dirs · remote-gpu-ssh · reporting
   sketch-tech-illustration/
     SKILL.md              # the hand-drawn warm-tech style spec
+  publishing-to-cnblogs/
+    SKILL.md              # the publish workflow
+    scripts/              # scrape · clean · get_cookies · rehost_images · to_html_rows · publish
+    references/           # cnblogs-api · gotchas
 ```
 
 ## Contributing
