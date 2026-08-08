@@ -12,6 +12,7 @@
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | Act as the coordinator running many independent tasks in parallel across isolated workspaces — split, isolate, dispatch, observe; covers Codex/GPT fan-out, full-folder isolation, remote GPU/SSH, and reporting | ✅ Ready |
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | A hand-drawn, warm-toned illustration style spec for AI / tech storytelling — locked four-color palette, per-element drawing rules, composition, and a do/don't checklist | ✅ Ready |
 | [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | Publish or cross-post an article to 博客园 (cnblogs) — local Markdown or scraped from 51cto — with images re-hosted to cnblogs' own CDN and publishing via the REST API | ✅ Ready |
+| [huopan-listing-search](skills/huopan-listing-search/SKILL.md) | Search real Chinese commercial-real-estate listings (shops, offices, warehouses, apartments, hotels) through the 火盘 MCP service in a single call — no handshake, no tool probing — and render the results as HTML cards | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -174,6 +175,38 @@ The agent launches an isolated debug Chrome, has you log into 博客园 once, th
 
 ---
 
+## huopan-listing-search — one-call listing search, rendered as cards
+
+### The problem
+
+Point a model at a bare MCP endpoint and it burns a round trip discovering it: `initialize`, `tools/list`, read the schema, *then* search. On chat platforms (豆包 / Kimi / 千问 / WorkBuddy) that shows up as a visibly slow answer — and you have to tell it "check the MCP first, then call it" every time. Worse, it doesn't know the library's shape, so it guesses hard filters that silently return zero, and it dumps raw JSON at the user.
+
+### What you get
+
+- **One call, no probing** — endpoint, transport and a paste-ready request body are in the skill, so the very first request is the search itself. The service is stateless and unauthenticated: no handshake, no `tools/list`.
+- **Knows what the library actually holds** — 998 listings, 748 for sale / 250 for lease, Shanghai-heavy, offices most common. Stated as facts, so the model can tell a thin result set from a failed call.
+- **Filters that don't silently zero out** — the three optional filters are hard filters; the skill says so, and says to leave them empty unless the user was explicit. Chinese values (「出租」「上海市」「写字楼」) are accepted too.
+- **Cards, not JSON** — a compact self-contained HTML skeleton, plus the field table with the fields that are frequently absent marked as such (area and price often simply aren't in the source data).
+- **Honest empty results** — a zero-hit response carries a ready-made inventory summary, so the model can say what the library covers and which constraint to relax.
+
+### Install
+
+Same one-liner:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+No MCP server registration and no runtime needed — the skill calls a public HTTP endpoint. On chat platforms that have no skills directory, paste `SKILL.md` into the custom-instructions / system-prompt field instead.
+
+### Usage
+
+Triggered by any commercial-property search. Or explicitly:
+
+> "查一下上海陆家嘴旁边适合开火锅店的店铺" · "find me offices for lease in Hangzhou, around 500㎡, and show them as cards"
+
+---
+
 ## 🚧 Coming soon: research automation series
 
 A full suite of research-automation workflows, packaged as skills:
@@ -220,6 +253,8 @@ skills/
     SKILL.md              # the publish workflow
     scripts/              # scrape · clean · get_cookies · rehost_images · to_html_rows · publish
     references/           # cnblogs-api · gotchas
+  huopan-listing-search/
+    SKILL.md              # endpoint · params · field table · HTML card skeleton
 ```
 
 ## Contributing

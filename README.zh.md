@@ -12,6 +12,7 @@
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | 作为总协调者并行推进多个独立任务：拆分 / 隔离 / 派活 / 观测，覆盖 Codex/GPT 并行分发、整目录隔离、远程 GPU/SSH、报告规范 | ✅ 可用 |
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | 面向 AI / 科技叙事的「手绘暖调」插画风格规范——锁定四色系、逐元素画法、构图与 Do/Don't 清单 | ✅ 可用 |
 | [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | 把文章发布/转发到博客园：本地 Markdown 或从 51cto 抓取，图片重托管到博客园图床，走官方 REST API 发布 | ✅ 可用 |
+| [huopan-listing-search](skills/huopan-listing-search/SKILL.md) | 一次调用查到真实商业地产房源（店铺 / 写字楼 / 厂房仓储 / 公寓 / 酒店）——免握手、免探测工具——并渲染成 HTML 卡片 | ✅ 可用 |
 | 自动化科研系列 | 文献调研、实验设计、论文复现、结果验证等科研工作流 | 🚧 筹备中 |
 
 ---
@@ -174,6 +175,38 @@ Agent 会起一个独立的调试 Chrome，让你在里面登录一次博客园�
 
 ---
 
+## huopan-listing-search — 一次调用查房源，直接渲染成卡片
+
+### 它解决什么问题
+
+把一个裸 MCP 地址丢给模型，它会先花一整个来回去摸底：握手、列工具、读参数说明，然后才开始查。在豆包 / Kimi / 千问 / WorkBuddy 这类对话端上，这就是用户能明显感觉到的慢——而且每次都得叮嘱它"先检查这个 MCP，再去调"。更糟的是它不知道库里有什么，硬条件随手一填就静默归零，最后还把原始 JSON 摊给用户看。
+
+### 装上之后的效果
+
+- **一次调用，不用摸底**：端点、传输方式、可直接粘的请求体都写在 skill 里，第一个请求就是查询本身。服务无状态、无鉴权，不需要握手，也不需要先列工具。
+- **知道库里到底有什么**：998 套、出售 748 / 出租 250、上海占大头、写字楼最多——都以事实给出，模型能分清"结果本来就少"和"调用失败了"。
+- **硬条件不会白填**：三个可选条件是硬过滤，skill 直说填错方向直接 0 命中、用户没明说就留空；中文写法（「出租」「上海市」「写字楼」）也认。
+- **出卡片，不出 JSON**：一份自包含的 HTML 骨架，配一张返回字段表，把经常缺失的字段（面积、价格——源数据本来就没有）标了出来。
+- **查不到也说得清**：0 命中时返回里自带一份在库统计，模型据此说明库里覆盖什么、建议往哪个方向放宽，而不是干巴巴一句"没找到"。
+
+### 安装
+
+还是那一行：
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+不需要注册 MCP server，也没有额外运行时——它直接调一个公开 HTTP 端点。对话平台没有 skills 目录的，把 `SKILL.md` 原文粘进「自定义指令 / 系统提示词」即可。
+
+### 使用
+
+任何找商铺、找写字楼、找厂房的场景都会自动启用。也可显式触发：
+
+> "查一下上海陆家嘴旁边适合开火锅店的店铺" · "杭州 500 平左右的写字楼有哪些可租的，做成卡片给我"
+
+---
+
 ## 🚧 即将上架：自动化科研系列
 
 我们正在把一整套科研自动化工作流封装成 Skill，计划覆盖：
@@ -209,6 +242,8 @@ skills/
     SKILL.md              # 发布工作流
     scripts/              # scrape · clean · get_cookies · rehost_images · to_html_rows · publish
     references/           # cnblogs-api · gotchas
+  huopan-listing-search/
+    SKILL.md              # 端点 · 参数 · 返回字段表 · HTML 卡片骨架
 ```
 
 ## 参与贡献
