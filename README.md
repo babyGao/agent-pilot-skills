@@ -12,7 +12,7 @@
 | [orchestrating-parallel-research](skills/orchestrating-parallel-research/SKILL.md) | Act as the coordinator running many independent tasks in parallel across isolated workspaces — split, isolate, dispatch, observe; covers Codex/GPT fan-out, full-folder isolation, remote GPU/SSH, and reporting | ✅ Ready |
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | A hand-drawn, warm-toned illustration style spec for AI / tech storytelling — locked four-color palette, per-element drawing rules, composition, and a do/don't checklist | ✅ Ready |
 | [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | Publish or cross-post an article to 博客园 (cnblogs) — local Markdown or scraped from 51cto — with images re-hosted to cnblogs' own CDN and publishing via the REST API | ✅ Ready |
-| [huopan-listing-search](skills/huopan-listing-search/SKILL.md) | Search real Chinese commercial-real-estate listings (shops, offices, warehouses, apartments, hotels) through the 火盘 MCP service in a single call — no handshake, no tool probing — and render the results as HTML cards | ✅ Ready |
+| [huopan-listing-search](skills/huopan-listing-search/SKILL.md) | Search real Chinese commercial-real-estate listings (shops, offices, warehouses, apartments, hotels) through the 火盘 MCP service — pass the user's sentence through as-is, get structured listings back, render them as Markdown cards | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -183,11 +183,11 @@ Point a model at a bare MCP endpoint and it burns a round trip discovering it: `
 
 ### What you get
 
-- **One call, no probing** — endpoint, transport and a paste-ready request body are in the skill, so the very first request is the search itself. The service is stateless and unauthenticated: no handshake, no `tools/list`.
+- **One call, no probing** — endpoint, transport and a paste-ready request body are in the skill, so the very first request is the search itself. The service is stateless and unauthenticated: no handshake, no `tools/list`. Typical round trip is 3–5 seconds.
+- **No field extraction on your side** — pass the user's sentence through verbatim. The service runs its own model to split it into transaction type, property type, city, landmark, area and budget, so extraction quality doesn't depend on the calling platform, and improvements ship server-side without reissuing the skill.
 - **Knows what the library actually holds** — 998 listings, 748 for sale / 250 for lease, Shanghai-heavy, offices most common. Stated as facts, so the model can tell a thin result set from a failed call.
-- **Filters that don't silently zero out** — the three optional filters are hard filters; the skill says so, and says to leave them empty unless the user was explicit. Chinese values (「出租」「上海市」「写字楼」) are accepted too.
-- **Cards, not JSON** — a compact self-contained HTML skeleton, plus the field table with the fields that are frequently absent marked as such (area and price often simply aren't in the source data).
-- **Honest empty results** — a zero-hit response carries a ready-made inventory summary, so the model can say what the library covers and which constraint to relax.
+- **Cards, not JSON** — a Markdown table template (project name left, details right) that renders as a card list on any platform, plus a field table marking the fields that are frequently absent (area and price often simply aren't in the source data).
+- **Honest empty results** — a zero-hit response carries relaxation numbers (how many listings each loosened constraint would yield) plus an inventory summary, so the model can say what the library covers and which constraint to drop.
 
 ### Install
 
