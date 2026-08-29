@@ -39,13 +39,24 @@ description: Use when the user is looking for commercial real estate to rent or 
 | 行 | 内容 |
 |---|---|
 | 标题 | 两位序号 + 项目名（**项目名本身挂 `detail_url`**，不另起一行放链接）；第一套加 `★最推荐` |
-| 封面图 | `image_url` **有才出这一行**：`![项目名](image_url)`。没有 `image_url` 的房源整行删掉，不放占位图、不留空图 |
+| 封面图 | 这一行**每张卡都有**。有 `image_url` 用它：`![项目名](image_url)`；没有就按卡片序号在下面四张占位图里轮换（01→a、02→b、03→c、04→d、05 回到 a），与火盘站内无图卡片同一套 |
 | 位置与胶囊 | 同一行：📍 + `address`，接着业态 → 面积 → 租售 → 标签（最多 3 枚）→ `Cap 回报率`（有才加），每枚用反引号 |
 | 价格 | `price_text`，用 `###` 放大成卡片主角；**没有价格**时改写成一行 `💰 价格待确认`，不要放大 |
 | 自述 | 嵌一层引用 + ✨ + `description`，可裁剪可摘要 |
 
 封面图是站外直链，直接放进 Markdown 图片语法即可，不要改写、不要截断参数；
 个别图加载失败就失败，卡片其余内容照常。
+
+无图房源的占位图（按序号轮换）：
+
+```
+https://www.hpan.com.cn/listing-covers/prop-cover-a.png
+https://www.hpan.com.cn/listing-covers/prop-cover-b.png
+https://www.hpan.com.cn/listing-covers/prop-cover-c.png
+https://www.hpan.com.cn/listing-covers/prop-cover-d.png
+```
+
+占位图只是版面兜底，不是该房源的实拍——文字里不要描述或引用它。
 
 `Cap 5.2%` 这类含空格的胶囊，空格用不换行空格（U+00A0），窄屏时才不会被从中间劈开。
 
@@ -122,7 +133,7 @@ Streamable HTTP 传输，**无状态、无鉴权**。不需要 `initialize`，�
 | `tags` | 特征标签 | 是 |
 | `description` | 房源自述（业主或代理填的原文） | 是 |
 | `detail_url` | 官网详情页地址 | 是 |
-| `image_url` | 封面图直链，放进卡片的图片行 | 常缺（缺时键不存在） |
+| `image_url` | 封面图直链，放进卡片的图片行 | 常缺（缺时键不存在，图片行改用占位图轮换） |
 | `rent_unit_price` / `total_price_wan` 等 | 可参与计算的原始数值 | 看数据 |
 
 ---
