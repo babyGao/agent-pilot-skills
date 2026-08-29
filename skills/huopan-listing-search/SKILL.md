@@ -1,6 +1,6 @@
 ---
 name: huopan-listing-search
-description: Use when the user is looking for commercial real estate to rent or buy in China — 店铺 / 门面 / 写字楼 / 办公室 / 厂房 / 仓库 / 产业园 / 公寓 / 酒店 — for shop-site selection, office relocation, or property investment, and needs real listings with area, price, location and detail links rendered as cards.
+description: Use when the user is looking for commercial real estate to rent or buy in China — 店铺 / 门面 / 写字楼 / 办公室 / 厂房 / 仓库 / 产业园 / 公寓 / 酒店 — for shop-site selection, office relocation, or property investment, and needs real listings with cover photo, area, price, location and detail links rendered as cards.
 ---
 
 # 火盘商业地产房源检索
@@ -17,12 +17,15 @@ description: Use when the user is looking for commercial real estate to rent or 
 1. **一行汇总** —— 命中总数、展示条数、实际生效的条件（取自 `applied_conditions`）
 2. **每套房源一张卡片** —— 结构照下面这份原样套用，只替换数据
 3. **一句收尾** —— 只说返回值支持的事实：结果跨了哪些维度（`unspecified`）、
-   库里覆盖情况、条件可以怎么调
+   库里覆盖情况、条件可以怎么调。`askable` 里是这个业态下还能进一步问清的维度，
+   要不要顺势追问一两个、怎么问，由你按对话语境定；一个都不问也没问题
 
 卡片结构：
 
 ```markdown
 > #### 01　[机场城市航站楼](详情页地址)　★最推荐
+>
+> ![机场城市航站楼](封面图地址)
 >
 > 📍 上海 静安区　`写字楼`　`209㎡`　`出租`　`甲级`
 >
@@ -36,9 +39,13 @@ description: Use when the user is looking for commercial real estate to rent or 
 | 行 | 内容 |
 |---|---|
 | 标题 | 两位序号 + 项目名（**项目名本身挂 `detail_url`**，不另起一行放链接）；第一套加 `★最推荐` |
+| 封面图 | `image_url` **有才出这一行**：`![项目名](image_url)`。没有 `image_url` 的房源整行删掉，不放占位图、不留空图 |
 | 位置与胶囊 | 同一行：📍 + `address`，接着业态 → 面积 → 租售 → 标签（最多 3 枚）→ `Cap 回报率`（有才加），每枚用反引号 |
 | 价格 | `price_text`，用 `###` 放大成卡片主角；**没有价格**时改写成一行 `💰 价格待确认`，不要放大 |
 | 自述 | 嵌一层引用 + ✨ + `description`，可裁剪可摘要 |
+
+封面图是站外直链，直接放进 Markdown 图片语法即可，不要改写、不要截断参数；
+个别图加载失败就失败，卡片其余内容照常。
 
 `Cap 5.2%` 这类含空格的胶囊，空格用不换行空格（U+00A0），窄屏时才不会被从中间劈开。
 
@@ -47,8 +54,8 @@ description: Use when the user is looking for commercial real estate to rent or 
 
 ## 数据只用返回里有的
 
-**返回值里没有的字段一律不出现在卡片里。** 距离、车程、地铁几号线、周边配套、竣工年、
-房源图片都不在返回值里。可以基于已有事实做**推断**，但要写成推断的语气，不能当事实陈述——
+**返回值里没有的字段一律不出现在卡片里。** 距离、车程、地铁几号线、周边配套、竣工年
+都不在返回值里。可以基于已有事实做**推断**，但要写成推断的语气，不能当事实陈述——
 "从行政区看离陆家嘴不远" 可以，"车程 5 分钟" 不行。
 
 面积、价格缺失时写 `面积待确认` / `价格待确认`，不省略、不猜。缺失的字段不会以 null 出现，
@@ -93,7 +100,8 @@ Streamable HTTP 传输，**无状态、无鉴权**。不需要 `initialize`，�
 | 字段 | 含义 |
 |---|---|
 | `applied_conditions` | 服务端拆出并实际生效的条件（含 `semantic_query`、`soft_tags`） |
-| `unspecified` | 用户没说清、因而没作为条件的必填项。非空说明结果跨了这些维度 |
+| `unspecified` | 用户没说清、因而没作为条件的必填项（租还是买 / 什么类型的物业 / 哪个城市）。非空说明结果跨了这些维度——房源照常返回，要不要向用户问清由你判断 |
+| `askable` | 这个业态下还可以进一步问清的维度名（如「面积」「月租预算」「要不要烟道」）。已说清的不会出现。这是**可问清单，不是必答项** |
 | `total_matched` / `returned` | 命中总数 / 本次返回条数 |
 | `recall_channel` | `hybrid` 混合检索；`project_name` 用户指名了某栋楼 |
 | `listings` | 房源列表 |
@@ -114,6 +122,7 @@ Streamable HTTP 传输，**无状态、无鉴权**。不需要 `initialize`，�
 | `tags` | 特征标签 | 是 |
 | `description` | 房源自述（业主或代理填的原文） | 是 |
 | `detail_url` | 官网详情页地址 | 是 |
+| `image_url` | 封面图直链，放进卡片的图片行 | 常缺（缺时键不存在） |
 | `rent_unit_price` / `total_price_wan` 等 | 可参与计算的原始数值 | 看数据 |
 
 ---
