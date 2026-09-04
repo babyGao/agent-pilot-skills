@@ -1,0 +1,41 @@
+Subject: {my org} x {brand} - partnership enquiry re {area}
+
+Dear {brand} team,
+
+[1. INTRODUCTION AND INTENT]
+I'm {my name}, who runs {my org}. We've spent {years} years on {my field}, focused on {what we do}.
+
+[2. EVIDENCE OF HOMEWORK]
+I've been following your work for a while. Looking at your "{product}", there looks to be real
+headroom on {specific axis}.
+
+[3. SHOW THE MUSCLE]
+Three things we're good at (more stars, deeper the build):
+
+1. **{service line one}** ***: {one sentence on what they get};
+
+2. **{service line two}** ****: {one sentence on what they get};
+
+3. **{service line three}** *****: {one sentence on what they get}.
+
+[4. CALL TO ACTION]
+We've put together a short {named artefact}. If it's of interest, just reply to this email and
+I'll send it over.
+
+Best regards,
+
+{my name} | {my org}
+{contact}
+
+
+────────────────────────────────────
+NOTES (delete this block and the [ ] part labels before sending)
+
+Only two fields change per recipient: {brand} and {product}. Both come from prospects.csv.
+Everything else is a constant you fill in once for the whole batch.
+
+Keep the four parts in this order. In part 3, put the service line this particular reader
+recognises first, and never list more than three.
+
+Target length is 200-250 characters of body copy. If it runs longer, cut part 2 first - it only
+needs to prove the email is not a blast, not to analyse their business.

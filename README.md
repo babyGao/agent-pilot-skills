@@ -13,6 +13,7 @@
 | [sketch-tech-illustration](skills/sketch-tech-illustration/SKILL.md) | A hand-drawn, warm-toned illustration style spec for AI / tech storytelling — locked four-color palette, per-element drawing rules, composition, and a do/don't checklist | ✅ Ready |
 | [publishing-to-cnblogs](skills/publishing-to-cnblogs/SKILL.md) | Publish or cross-post an article to 博客园 (cnblogs) — local Markdown or scraped from 51cto — with images re-hosted to cnblogs' own CDN and publishing via the REST API | ✅ Ready |
 | [huopan-listing-search](skills/huopan-listing-search/SKILL.md) | Search real Chinese commercial-real-estate listings (shops, offices, warehouses, apartments, hotels) through the 火盘 MCP service — pass the user's sentence through as-is, get structured listings back, render them as Markdown cards | ✅ Ready |
+| [hello-boss](skills/hello-boss/SKILL.md) | Turn the agent into your outbound salesperson — map every industry that could buy what you do, resolve each prospect's operating company and email from public business registries, write one cold email that earns replies, and send the batch | ✅ Ready |
 | Research automation (series) | Literature review, experiment design, paper reproduction, result verification | 🚧 In progress |
 
 ---
@@ -207,6 +208,64 @@ Triggered by any commercial-property search. Or explicitly:
 
 ---
 
+## hello-boss — the agent as your outbound salesperson
+
+### The problem
+
+Cold outreach breaks at both ends, and almost every tool helps only with the middle. You cannot
+**reach** people: ask a logistics operator to name customers and you get "other logistics
+companies", because nobody has a method for enumerating who could actually buy what you do. Then
+even with a name, you do not know which legal entity operates a brand — registry data is full of
+identical names, outsourced operators, dissolved shells and contract manufacturers posing as
+operators. And you cannot **land**: the mail bounces or sits in spam.
+
+### What you get
+
+- **Five enumeration paths for demand discovery** — the skill first reframes your identity as a
+  *job* ("I move things with volume and weight from A to B and carry the time and damage risk"),
+  then works the value chain via **input-output coefficients**, walks the **20 top-level industry
+  divisions** so nothing is missed, transfers the same job to other industries, reads **job
+  postings as demand signals** (five data-entry openings means the volume justifies hiring *and*
+  the budget is approved), and works backwards from the constraint you remove. Typical output goes
+  from 4 candidate industries to 30+.
+- **Ranking with evidence, not feeling** — purchase intensity from the input-output table and an
+  email coverage rate **measured on a 10-company sample**. At 20% coverage, 100 prospects yields
+  20 sends; that number decides go/no-go, and estimating it wrong wastes everything downstream.
+- **Entity resolution you can defend** — four independent signals (brand-to-company, trademark
+  holder, address match, store tier) converged into three confidence grades. Weak leads are never
+  guessed at; they route to a fallback channel that asks for the partnerships address directly.
+- **A letter built to earn a reply, not to deliver the work** — four parts, 200-250 characters,
+  exactly one per-recipient variable, plus a table of phrasings that reliably kill replies. We
+  wrote 58 individually-researched argument paragraphs for a real run and threw all of them away;
+  the skill explains why.
+- **Three named deliverables and a fixed directory** — a demand research report, a prospect list,
+  and an email template, at paths that never move. Nothing else is in scope.
+- **Measurements from a real 58-company run** — throttling threshold, bounce rate, per-domain
+  delivery split, all in `references/field-notes.md`, including the parts that went wrong.
+
+### Install
+
+Same one-liner:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+No MCP server and no runtime needed — it is a reference-and-workflow skill. Stage 4 hands the
+list and template to whatever mailer you already use.
+
+### Usage
+
+The agent loads it whenever you talk about finding customers, outbound, prospect lists or cold
+email. Or trigger explicitly — and note the four stages are not a required sequence, so entering
+in the middle is fine:
+
+> "I run a logistics company. Map every industry I could serve and write the research report."
+>
+> "Turn this spreadsheet into a proper prospect list." · "What's wrong with this cold email?"
+
+---
+
 ## 🚧 Coming soon: research automation series
 
 A full suite of research-automation workflows, packaged as skills:
@@ -255,6 +314,10 @@ skills/
     references/           # cnblogs-api · gotchas
   huopan-listing-search/
     SKILL.md              # endpoint · params · field table · HTML card skeleton
+  hello-boss/
+    SKILL.md              # four stages · three deliverables · three hard rules
+    references/           # target-pools · registries · field-notes
+    templates/            # research-report · prospects.csv · letter
 ```
 
 ## Contributing

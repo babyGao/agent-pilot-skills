@@ -1,0 +1,4 @@
+brand,company,product,email,source,confidence,signals,status,note
+Example Alpha Store,Example Alpha Foods Ltd,mixed nut gift box,demo-a@example.com,https://registry-link,strong,ABD,queued,
+Example Beta Foods,Example Beta Trading Ltd,shredded beef jerky,demo-b@example.com,https://registry-link,medium,A,queued,only the brand-to-company signal matched
+Example Gamma Trading,,instant seaweed snack,,no address published on product page,weak,,hold,brand search returned 3 active companies; ask storefront support for the partnerships address
