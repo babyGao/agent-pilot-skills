@@ -135,6 +135,13 @@ npx skills add babyGao/agent-pilot-skills -g -y
 ### 安装
 
 还是上面那一行命令，从本仓库安装：
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+---
+
 ## publishing-to-cnblogs — 稳定的博客园跨平台转发
 
 ### 它解决什么问题
@@ -155,6 +162,12 @@ npx skills add babyGao/agent-pilot-skills -g -y
 
 ```bash
 npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+只想装这一个、不要整套：
+
+```bash
+npx skills add babyGao/agent-pilot-skills -s hello-boss -g -y
 ```
 
 不需要 MCP server，也没有额外运行时——它是一份纯参考型 skill。

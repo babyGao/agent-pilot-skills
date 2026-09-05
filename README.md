@@ -135,6 +135,13 @@ Ask an agent (or a designer) for "AI / tech" visuals and you usually get slick v
 ### Install
 
 Same one-liner — it installs from this repo:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+---
+
 ## publishing-to-cnblogs — reliable 博客园 cross-posting
 
 ### The problem
@@ -249,6 +256,12 @@ Same one-liner:
 
 ```bash
 npx skills add babyGao/agent-pilot-skills -g -y
+```
+
+Only want this one, not the whole collection:
+
+```bash
+npx skills add babyGao/agent-pilot-skills -s hello-boss -g -y
 ```
 
 No MCP server and no runtime needed — it is a reference-and-workflow skill. Stage 4 hands the
