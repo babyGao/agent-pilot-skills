@@ -1,6 +1,6 @@
 ---
 name: hello-boss
-description: Turns the agent into your outbound salesperson. Use it when you need to reach a batch of companies you have no introduction to: it maps every industry that could buy what you do, resolves each prospect's operating company and email from public business registries, writes one cold email that earns replies, and sends the batch.
+description: Turns the agent into your outbound salesperson. Use it when you need to reach a batch of companies you have no introduction to — it maps every industry that could buy what you do, resolves each prospect's operating company and email from public business registries, writes one cold email that earns replies, and sends the batch.
 ---
 
 # hello-boss
